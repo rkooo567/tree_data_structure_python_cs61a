@@ -118,5 +118,35 @@ def collect_words(t):
 		words += [root(t) + w for w in collect_words(b)]
 	return words
 
-t = tree('h', [tree('i'), tree('e', [tree('l', [tree('l', [tree('o')])]), tree('y')])])
-print_tree(t)
+def tree_max(t):
+	if is_leaf(t):
+		return root(t)
+	else:
+		return max([root(t)] + [tree_max(b) for b in branches(t)])
+
+def square_tree(t):
+	if is_leaf(t):
+		return tree(root(t) ** 2)
+	else:
+		return tree(root(t) ** 2, [square_tree(b) for b in branches(t)])
+
+def find_path(t, x):
+	if root(t) == x:
+		return [root(t)]
+	elif is_leaf(t):
+		return []
+	else:
+		for b in branches(t):
+			print("root :", root(t))
+			print("branche :", b)
+			lst = [root(t)] + find_path(b, x)
+			if lst[-1] == x:
+				return lst
+	return None
+
+def height(t):
+	if is_leaf(t):
+		return 0
+	return 1 + max([height(branch) for branch in branches(t)])
+
+t = tree(1, [tree(2, [tree(3), tree(4)]), tree(5, [tree(6, [tree(7, [tree(8)])])])])
